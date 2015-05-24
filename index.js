@@ -18,6 +18,7 @@ module.exports = function(opts){
   var param = opts.param;
   var pretty = null == opts.pretty ? true : opts.pretty;
   var spaces = opts.spaces || 2;
+  var presenter = opts.presenter || null;
 
   return function *filter(next){
     yield *next;
@@ -37,16 +38,21 @@ module.exports = function(opts){
 
     // always stringify object streams
     if (stream) {
-      this.response.type = 'json';
+      this.response.type = (presenter)?'application/vnd.api+json':'json';
       var stringify = Stringify();
       if (prettify) stringify.space = spaces;
       this.body = body.pipe(stringify);
       return;
+    }
+    if (presenter) {
+        this.response.type = 'application/vnd.api+json';
+        body = presenter.render(body);
     }
 
     // prettify JSON responses
     if (json && prettify) {
       return this.body = JSON.stringify(body, null, spaces);
     }
+    return this.body = body;
   }
 };

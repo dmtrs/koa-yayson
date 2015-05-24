@@ -3,6 +3,7 @@ var Readable = require('stream').Readable;
 var request = require('supertest');
 var json = require('..');
 var koa = require('koa');
+var Presenter = require('yayson')({ adapter: 'default' }).Presenter;
 
 describe('streams', function(){
   it('should not do anything binary streams', function (done) {
@@ -47,6 +48,39 @@ describe('streams', function(){
 
       res.text.should.include('{"message":"1"}');
       res.text.should.include('{"message":"2"}');
+      res.body.should.eql([{
+        message: '1'
+      }, {
+        message: '2'
+      }]);
+      done();
+    })
+  })
+
+  it('should prettify object streams', function (done) {
+    var app = koa();
+
+    app.use(json());
+
+    app.use(function* (next) {
+      var stream = this.body = new Readable({ objectMode: true });
+      stream.push({
+        message: '1'
+      });
+      stream.push({
+        message: '2'
+      });
+      stream.push(null);
+    })
+
+    request(app.listen())
+    .get('/')
+    .expect('Content-Type', /application\/json/)
+    .expect(200, function (err, res) {
+      if (err) return done(err);
+
+      res.text.should.include('{\n  "message": "1"\n}');
+      res.text.should.include('{\n  "message": "2"\n}');
       res.body.should.eql([{
         message: '1'
       }, {

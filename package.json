@@ -1,8 +1,8 @@
 {
-  "name": "koa-json",
+  "name": "koa-yayjson",
   "version": "1.1.1",
-  "repository": "koajs/json",
-  "description": "pretty (non-compressed) json response middleware",
+  "repository": "dmtrs/koa-yayson",
+  "description": "pretty (non-compressed) jsonapi response middleware",
   "keywords": [
     "koa",
     "json"
@@ -16,7 +16,8 @@
     "mocha": "1",
     "should": "3",
     "koa": "0",
-    "supertest": "0"
+    "supertest": "0",
+    "yayson": "^2.0.0-beta.1"
   },
   "license": "MIT",
   "scripts": {
@@ -24,5 +25,7 @@
     "test-cov": "NODE_ENV=test node --harmony-generators ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require should",
     "test-travis": "NODE_ENV=test node --harmony-generators ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --require should"
   },
-  "files": ["index.js"]
+  "files": [
+    "index.js"
+  ]
 }
