@@ -1,5 +1,5 @@
 {
-  "name": "koa-yayjson",
+  "name": "koa-yayson",
   "version": "1.1.1",
   "repository": "dmtrs/koa-yayson",
   "description": "pretty (non-compressed) jsonapi response middleware",
